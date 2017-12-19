@@ -16,11 +16,11 @@ img=double(img(:));
 ima=max(img(:));
 imi=min(img(:));
 mse=std(img(:));
-snr=20*log10((ima-imi)./mse);
+snr2=20*log10((ima-imi)./mse);
 % Measure Peak SNR
-[peaksnr, snr] = psnr(I_noise, I);
+[peaksnr, snr2] = psnr(I_noise, I);
 %fprintf('\n The Peak-SNR value is %0.4f', peaksnr);
-fprintf('\n The SNR value is %0.4f \n', snr);
+fprintf('\n The SNR value is %0.4f \n', snr2);
 %fprintf('\n The MSE value is %0.4f \n', mse);
    %Plot original & filtered figure
    subplot(1,2,2), imshow(I), title('Filtered image')
@@ -28,5 +28,6 @@ fprintf('\n The SNR value is %0.4f \n', snr);
     text(size(I,2),size(I,1)+15, ...
       'Gaussian = 0.09', ...
       'FontSize',10,'HorizontalAlignment','right');
+  
 end
 
