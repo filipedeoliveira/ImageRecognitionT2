@@ -14,8 +14,11 @@ image_name = image(1:end-4);
         image_salted = imnoise(src_image,'salt & pepper',d); 
         %figure, imshow(image_salted);
         %title('Image with Salt & pepper Noise');
+        
         output_name = strcat(image_name,'_salt&pepper_',num2str(d),'.jpg');
         imwrite(image_salted,strcat(path_output,'/',output_name));
+
+        SNR(src_image,image_salted,d);
         
     elseif(n == 2)
         gaussian_variance = input('Introduza valor da variancia : ');
@@ -29,7 +32,7 @@ image_name = image(1:end-4);
 
 %--------------------FAZER--------------------------------
 %SNR of the noisy image to verify the level of noise introduced;
-    
+
     
 %------------------------------------FUNÇÃO 2 fazer pré prossecamento ----------------------------------------
 %1- filtering methods
@@ -42,7 +45,7 @@ if(n == 1)
     subplot(1,2,2), imshow(image_median_filter), title('Image Filtered using Median Filter');
 %se foi intoduzido ruido gaussiano usar gaussian filter
 elseif(n==2)
-    sigma=1 %mexer no valor se sigma ex. 2,3 para ver qual tem melhor resultado
+    sigma=1; %mexer no valor se sigma ex. 2,3 para ver qual tem melhor resultado
     image_gaussian_filter = imgaussfilt(image_gauss,sigma);
     figure
     subplot(1,2,1), imshow(image_gauss), title('Image Gaussian noise');
