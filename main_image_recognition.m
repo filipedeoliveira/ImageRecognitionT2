@@ -1,5 +1,5 @@
 function  main_image_recognition( image )
-path = fullfile(mfilename('class'),'Imagens',image);
+path = fullfile(mfilename('class'),'output',image);
 src_image =imread(path);
 path_output = fullfile(mfilename('class'),'output');
 image_name = image(1:end-4);
@@ -11,9 +11,11 @@ image_name = image(1:end-4);
     n = input('Para indtroduzir ruido Salt & pepper carrege 1, para Gaussiano introduza 2-> ');
     if(n == 1)
         d = input('Introduza valor da densidade: ');
-        image_salted = imnoise(src_image,'salt & pepper',d);
+        image_salted = imnoise(src_image,'salt & pepper',d); 
         figure, imshow(image_salted);
         title('Salt & pepper Noise');
+        output_name = strcat(image_name,'_salt&pepper_',num2str(d),'.jpg');
+        imwrite(image_salted,strcat(path_output,'/',output_name));
         
     elseif(n == 2)
         gaussian_variance = input('Introduza valor da variancia : ');
@@ -21,6 +23,8 @@ image_name = image(1:end-4);
         image_gauss = imnoise(src_image,'gaussian',gaussian_mean,gaussian_variance);
         figure,imshow(image_gauss);
         title('Gaussian Noise');
+        output_name = strcat(image_name,'_gaussian_',num2str(gaussian_variance),num2str(gaussian_mean),'.jpg');
+        imwrite(image_gauss,strcat(path_output,'/',output_name));
     end
 
 %--------------------FAZER--------------------------------

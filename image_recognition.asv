@@ -19,8 +19,7 @@ b = sendImage(1:end-4);
 
 %temos de guardar a imagem a preto e branco na pasta para depois a função
 %ir la buscar
-%path_image_to_send = fullfile(mfilename('class'),'Imagens');
-path_image_to_send = fullfile(mfilename('class'),'output');
+path_image_to_send = fullfile(mfilename('class'),'Imagens');
 output_name = strcat(b,'_grayscale.jpg');
 imwrite(Image_to_send,strcat(path_image_to_send,'/',output_name));
 
