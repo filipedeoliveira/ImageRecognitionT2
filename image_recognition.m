@@ -1,7 +1,7 @@
 clc    
 addpath('Imagens/');
     S = '###### Seja bem vindo. Ecolha uma das seguintes imagens! ######';
-    S2 = 'Imagens actuais da directoria  ==> scripts_Parte2/Imagens <==';
+    S2 = 'Imagens actuais da directoria  ==> Imagens <==';
     S4 = 'Até breve!';
     S5 = 'Nome inválido!';
 addpath('Imagens/');
