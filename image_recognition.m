@@ -10,8 +10,8 @@ disp(S);
 disp(S2);
 dir 'Imagens'
 
-Image = input('Exemplo:       coins.jpg -> ');
-Image = imread(Image);
+sendImage = input('Exemplo:       coins.jpg -> ');
+Image = imread(sendImage);
 
 %In the script, you should create the grey-scale image before running the function “main_image_recognition.m”
 Image_to_send = rgb2gray(Image);
