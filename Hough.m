@@ -12,6 +12,7 @@ axis on, axis normal, hold on;
 P  = houghpeaks(H,peaks,'threshold',ceil(0.3*max(H(:))));
 x = T(P(:,2)); y = R(P(:,1));
 plot(x,y,'s','color','white');
+colormap(gca,hot); %cor: vermelho
 
 lines = houghlines(BW,T,R,P,'FillGap',fillgap,'MinLength',minLength);
 figure, imshow(A), hold on
