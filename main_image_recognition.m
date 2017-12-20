@@ -15,9 +15,6 @@ image_name = image(1:end-4);
         %figure, imshow(image_salted);
         %title('Image with Salt & pepper Noise');
         
-        snr = SNR(src_image,image_salted,d);
-        fprintf('\n The SNR value is %0.4f \n', snr);
-        
         output_name = strcat(image_name,'_salt&pepper_',num2str(d),'.jpg');
         imwrite(image_salted,strcat(path_output,'/',output_name));
 
@@ -30,8 +27,7 @@ image_name = image(1:end-4);
         %figure,imshow(image_gauss);
         %title('Image with Gaussian Noise');
         
-        snr = SNR(src_image,image_gauss,gaussian_mean);
-        fprintf('\n The SNR value is %0.4f \n', snr);
+        
         
         output_name = strcat(image_name,'_gaussian_',num2str(gaussian_variance),num2str(gaussian_mean),'.jpg');
         imwrite(image_gauss,strcat(path_output,'/',output_name));
@@ -48,12 +44,18 @@ image_name = image(1:end-4);
 
 %se foi introduzido ruido salt & papper usar median filter
 if(n == 1)
+    snr = SNR(src_image,image_salted,0);
+    fprintf('\n The SNR value is %0.4f \n', snr);
+    
     image_median_filter = medfilt2(image_salted);
     figure
     subplot(1,2,1), imshow(image_salted), title('Image Salted');
     subplot(1,2,2), imshow(image_median_filter), title('Image Filtered using Median Filter');
 %se foi intoduzido ruido gaussiano usar gaussian filter
 elseif(n==2)
+    snr = SNR(src_image,image_gauss,0);
+    fprintf('\n The SNR value is %0.4f \n', snr);
+    
     sigma=1; %mexer no valor se sigma ex. 2,3 para ver qual tem melhor resultado
     image_gaussian_filter = imgaussfilt(image_gauss,sigma);
     figure
@@ -105,7 +107,7 @@ title('Original');
 Hough(image_to_use,10,7,5);
 
 
-HoughTransformCircles(src_image);
+HoughTransformCircles(image_to_use);
 
 
 %------------------------------------FUNÇÃO 4 total de moedas ----------------------------------------
