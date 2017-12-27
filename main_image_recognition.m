@@ -48,7 +48,7 @@ captionFontSize = 14;
 %se foi introduzido ruido salt & papper usar median filter
 if(n == 1)
     snr = SNR(src_image,image_salted,0);
-    fprintf('\n The SNR value is %0.4f \n', snr);
+    %fprintf('\n The SNR value is %0.4f \n', snr);
     
     image_median_filter = medfilt2(image_salted);
     figure
@@ -57,7 +57,7 @@ if(n == 1)
 %se foi intoduzido ruido gaussiano usar gaussian filter
 elseif(n==2)
     snr = SNR(src_image,image_gauss,0);
-    fprintf('\n The SNR value is %0.4f \n', snr);
+    %fprintf('\n The SNR value is %0.4f \n', snr);
     
     sigma=1; %mexer no valor se sigma ex. 2,3 para ver qual tem melhor resultado
     image_gaussian_filter = imgaussfilt(image_gauss,sigma);
