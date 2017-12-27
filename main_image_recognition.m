@@ -3,14 +3,10 @@ path = fullfile(mfilename('class'),'output',image);
 src_image =imread(path);
 path_output = fullfile(mfilename('class'),'output');
 image_name = image(1:end-4);
-warning('off', 'Images:initSize:adjustingMag');
-captionFontSize = 14;
-
 
 %------------------------------------FUNÇÃO 1  ruido----------------------------------------
 %Your program should ask to the user the type of noise to be added separately to the input
 %image: salt-an-pepper or gaussian noise.
-
     n = input('Para indtroduzir ruido Salt & pepper carrege 1, para Gaussiano introduza 2-> ');
     if(n == 1)
         d = input('Introduza valor da densidade: ');
@@ -20,9 +16,6 @@ captionFontSize = 14;
         
         output_name = strcat(image_name,'_salt&pepper_',num2str(d),'.jpg');
         imwrite(image_salted,strcat(path_output,'/',output_name));
-
-        
-        
     elseif(n == 2)
         gaussian_variance = input('Introduza valor da variancia : ');
         gaussian_mean = input('Introduza a média: ');
@@ -30,23 +23,16 @@ captionFontSize = 14;
         %figure,imshow(image_gauss);
         %title('Image with Gaussian Noise');
         
-        
-        
         output_name = strcat(image_name,'_gaussian_',num2str(gaussian_variance),num2str(gaussian_mean),'.jpg');
         imwrite(image_gauss,strcat(path_output,'/',output_name));
-        
-        
     end
 
-%--------------------FAZER--------------------------------
-%SNR of the noisy image to verify the level of noise introduced;
-
-    %feito mais abaixo
 %------------------------------------FUNÇÃO 2 fazer pré prossecamento ----------------------------------------
 %1- filtering methods
 
 %se foi introduzido ruido salt & papper usar median filter
 if(n == 1)
+    %SNR of the noisy image to verify the level of noise introduced;
     snr = SNR(src_image,image_salted);
     %fprintf('\n The SNR value is %0.4f \n', snr);
     
@@ -54,8 +40,10 @@ if(n == 1)
     figure
     subplot(1,2,1), imshow(image_salted), title('Image Salted');
     subplot(1,2,2), imshow(image_median_filter), title('Image Filtered using Median Filter');
+    
 %se foi intoduzido ruido gaussiano usar gaussian filter
 elseif(n==2)
+    %SNR of the noisy image to verify the level of noise introduced;
     snr = SNR(src_image,image_gauss);
     %fprintf('\n The SNR value is %0.4f \n', snr);
     
@@ -85,65 +73,43 @@ title('Histogram equalization ');
 
 % 3 - Normalizar 
 Imagem_normalizada = mat2gray(Imagem_contraste);
-figure;
-imshow(Imagem_normalizada);
-title('Imagem normalizda');
-
-%4 threshold the image to get a binary image (only 0's and 1's)using im2bw()
-     normalizedThresholdValue = 0.45; % In range 0 to 1.
-      thresholdValue = normalizedThresholdValue * max(max(Imagem_normalizada)); 
-      binaryImage = im2bw(Imagem_normalizada, normalizedThresholdValue);       
-      binaryImage = Imagem_normalizada < thresholdValue; 
-      binaryImage = imfill(binaryImage, 'holes');
-      figure;
-      imshow(binaryImage);
-      title('binary');
-
-      labeledImage = bwlabel(binaryImage, 8);  
-      tamanhoMoeadas = regionprops(labeledImage, Imagem_normalizada, 'all');
-      numberOfBlobs = size(tamanhoMoeadas, 1);
-
-figure;
-imshow(Imagem_normalizada);
-title('Outlines, from bwboundaries()', 'FontSize', captionFontSize); 
-axis image; % Make sure image is not artificially stretched because of screen's aspect ratio.
-hold on;
-boundaries = bwboundaries(binaryImage);
-numberOfBoundaries = size(boundaries, 1);
-for k = 1 : numberOfBoundaries
-	thisBoundary = boundaries{k};
-	plot(thisBoundary(:,2), thisBoundary(:,1), 'g', 'LineWidth', 2);
-end
-hold off;
-
-
   
 %------------------------------------FUNÇÃO 3 segmentação ----------------------------------------
 %use a sequence of functions that solves the task of segmenting all of the coins in the image
 
+%Função 1
+%%Find Coins Lighter
+[centers, radii] = imfindcircles(Imagem_normalizada,[60 90],'Sensitivity',0.9);
+%Find Coins Darker
+[centers1, radii1] = imfindcircles(Imagem_normalizada,[55 70],'ObjectPolarity','dark','Sensitivity',0.92);
+
+A=[centers, radii];
+B=[centers1, radii1];
+C = vertcat(centers,centers1);
+D=vertcat(radii,radii1);
+
+figure
+imshow(Imagem_normalizada);
+h = viscircles(centers,radii);
+figure
+imshow(Imagem_normalizada);
+h1 = viscircles(C,D);
+
+
 %Otsu's fazer
 
-%K-MEANS - não esta a funcionar
-%img_as_col = double(Imagem_normalizada(:));
-%cluster_menbs = kmeans(img_as_col, 2,'distance', 'sqeuclidean');
-%labelim = zeros(size(img_as_col));
-%for i=1:3
-%    inds = find(cluster_menbs==i);
-%    meanval = mean(img_as_col(inds));
-%    labelim(inds) = meanval;
-%end
-%figure
-%imshow(labelim, []);
-
-%Hough(image_to_use,10,7,5);
-%HoughTransformCircles(src_image);
+%K-MEANS fazer
 
 
 %------------------------------------FUNÇÃO 4 total de moedas ----------------------------------------
-%Count the total number of coins in the image.
+%Number of Coins
+n = numel(D);
 
 %------------------------------------FUNÇÃO 5 histogram  ----------------------------------------
 %Show a histogram showing the distribution of object sizes. Either area or radius could be used as a size measure.
+figure
+histogram(D)
+title('Histogram of Coins By Radius');
 
 %------------------------------------FUNÇÃO 6  ----------------------------------------
 %Use a supervised approach (KNN or SVM) to classify the objects in the images,
