@@ -1,4 +1,4 @@
-function [ value_snr ] = SNR( Ioriginal, Inoise, Value )
+function [ value_snr ] = SNR( Ioriginal, Inoise)
 
 
 img=Inoise;
