@@ -36,7 +36,6 @@ fontSize = 24;
 if(n == 1)
     %SNR of the noisy image to verify the level of noise introduced;
     snr = SNR(src_image,image_salted);
-    %fprintf('\n The SNR value is %0.4f \n', snr);
     
     image_median_filter = medfilt2(image_salted);
     figure
@@ -47,8 +46,7 @@ if(n == 1)
 elseif(n==2)
     %SNR of the noisy image to verify the level of noise introduced;
     snr = SNR(src_image,image_gauss);
-    %fprintf('\n The SNR value is %0.4f \n', snr);
-    
+   
     sigma=1; %mexer no valor se sigma ex. 2,3 para ver qual tem melhor resultado
     image_gaussian_filter = imgaussfilt(image_gauss,sigma);
     figure
@@ -84,9 +82,30 @@ imwrite(Imagem_normalizada,strcat(path_output,'/',output_name1));
 %-------HOUGH TRANSFORM----------------
 %------------ Hough transform para imagem com ruido
 %%Find Coins Lighter
-[centers, radii] = imfindcircles(Imagem_normalizada,[55 90],'Sensitivity',0.9);
+% FAZER AQUI IF PARA VER DE ACORDO COM O NOME DA IMAGEM SE È a coins ou
+% coins2 ou coins 3
+
+%para imagem coins 
+    valor1 = [50 90];
+    valor2 = [50 70];
+    valor3 = [60 90];
+    valor4 = [55 70];
+    
+%para imaggem coins2 
+%     valor1 = [];
+%     valor2 = [];
+%     valor3 = [];
+%     valor4 = [];
+    
+%para imaggem coins3 
+%     valor1 = [];
+%     valor2 = [];
+%     valor3 = [];
+%     valor4 = [];
+    
+[centers, radii] = imfindcircles(Imagem_normalizada,valor1,'Sensitivity',0.9);
 %Find Coins Darker
-[centers1, radii1] = imfindcircles(Imagem_normalizada,[50 70],'ObjectPolarity','dark','Sensitivity',0.92);
+[centers1, radii1] = imfindcircles(Imagem_normalizada,valor2,'ObjectPolarity','dark','Sensitivity',0.92);
 
 A=[centers, radii];
 B=[centers1, radii1];
@@ -95,9 +114,9 @@ D=vertcat(radii,radii1);
 
 % --------Hough transform para imagem sem ruido
 %Find Coins Lighter
-[centersO, radiiO] = imfindcircles(src_image,[60 90],'Sensitivity',0.9);
+[centersO, radiiO] = imfindcircles(src_image,valor3,'Sensitivity',0.9);
 %Find Coins Darker
-[centers1O, radii1O] = imfindcircles(src_image,[55 70],'ObjectPolarity','dark','Sensitivity',0.92);
+[centers1O, radii1O] = imfindcircles(src_image,valor4,'ObjectPolarity','dark','Sensitivity',0.92);
 
 E=[centersO, radiiO];
 F=[centers1O, radii1O];
@@ -140,11 +159,22 @@ title('codigo da prof');
 %------------------------------------FUNÇÃO 4 total de moedas ----------------------------------------
 %Number of Coins
 n = numel(D);
+fprintf('\n O número de moedas é %d \n', snr);
+
 
 %------------------------------------FUNÇÃO 5 histogram  ----------------------------------------
 %Show a histogram showing the distribution of object sizes. Either area or radius could be used as a size measure.
+%area
+graindata = regionprops(D,'basic');
+grain_areas = [graindata.Area];
+
 figure
-histogram(D)
+subplot(1,2,1);
+histogram(grain_areas)
+title('Histogram of Coins Area');
+subplot(1,2,2);
+%aio
+histogram(D);
 title('Histogram of Coins By Radius');
 
 %------------------------------------FUNÇÃO 6  ----------------------------------------
