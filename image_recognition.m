@@ -24,4 +24,4 @@ path_image_to_send = fullfile(mfilename('class'),'output');
 output_name = strcat(b,'_grayscale.jpg');
 imwrite(Image_to_send,strcat(path_image_to_send,'/',output_name));
 
-main_image_recognition(output_name);
+main_image_recognition(output_name, b);

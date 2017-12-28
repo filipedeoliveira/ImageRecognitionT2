@@ -1,8 +1,9 @@
-function  main_image_recognition( image )
+function  main_image_recognition( image, nameInitial )
 path = fullfile(mfilename('class'),'output',image);
 src_image =imread(path);
 path_output = fullfile(mfilename('class'),'output');
 image_name = image(1:end-4);
+nomeMoeda = nameInitial;
 warning('off', 'Images:initSize:adjustingMag');
 fontSize = 24;
 
@@ -85,24 +86,34 @@ imwrite(Imagem_normalizada,strcat(path_output,'/',output_name1));
 % FAZER AQUI IF PARA VER DE ACORDO COM O NOME DA IMAGEM SE È a coins ou
 % coins2 ou coins 3
 
+
+disp(nomeMoeda);
+
+if(nomeMoeda == 'coins')
 %para imagem coins 
+
     valor1 = [50 90];
     valor2 = [50 70];
     valor3 = [60 90];
     valor4 = [55 70];
     
+elseif(nomeMoeda == 'coins2')    
 %para imaggem coins2 
 %     valor1 = [];
 %     valor2 = [];
 %     valor3 = [];
 %     valor4 = [];
-    
+
+elseif(nomeMoeda =='coins3')    
 %para imaggem coins3 
-%     valor1 = [];
-%     valor2 = [];
-%     valor3 = [];
-%     valor4 = [];
-    
+disp('Entrei');
+     valor1 = [245 250];
+     valor2 = [245 270];
+     valor3 = [290 300];
+     valor4 = [290 320];
+
+end
+
 [centers, radii] = imfindcircles(Imagem_normalizada,valor1,'Sensitivity',0.9);
 %Find Coins Darker
 [centers1, radii1] = imfindcircles(Imagem_normalizada,valor2,'ObjectPolarity','dark','Sensitivity',0.92);
@@ -159,7 +170,7 @@ title('codigo da prof');
 %------------------------------------FUNÇÃO 4 total de moedas ----------------------------------------
 %Number of Coins
 n = numel(D);
-fprintf('\n O número de moedas é %d \n', snr);
+fprintf('\n O número de moedas é %d \n', n);
 
 
 %------------------------------------FUNÇÃO 5 histogram  ----------------------------------------
