@@ -80,7 +80,7 @@ imwrite(Imagem_normalizada,strcat(path_output,'/',output_name1));
 %use a sequence of functions that solves the task of segmenting all of the coins in the image
 
 %-------HOUGH TRANSFORM----------------
-%------------ Hough transform para imagem com ruido
+% Hough transform para imagem com ruido
 %%Find Coins Lighter
 [centers, radii] = imfindcircles(Imagem_normalizada,[60 90],'Sensitivity',0.9);
 %Find Coins Darker
@@ -91,7 +91,7 @@ B=[centers1, radii1];
 C = vertcat(centers,centers1);
 D=vertcat(radii,radii1);
 
-% --------Hough transform para imagem sem ruido
+% --------Hough transform para imagem sem ruido------------
 %Find Coins Lighter
 [centersO, radiiO] = imfindcircles(src_image,[60 90],'Sensitivity',0.9);
 %Find Coins Darker
@@ -102,7 +102,7 @@ F=[centers1O, radii1O];
 G = vertcat(centersO,centers1O);
 H=vertcat(radiiO,radii1O);
 
-%---- Imagem segmentada com e sem ruido
+
 figure
 subplot(1,2,1), imshow(src_image), h = viscircles(centers,radii), h1 = viscircles(G,H);
 title('Segmented image without noise');
