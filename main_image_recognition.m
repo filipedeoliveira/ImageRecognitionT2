@@ -87,7 +87,7 @@ imwrite(Imagem_normalizada,strcat(path_output,'/',output_name1));
 % coins2 ou coins 3
 
 
-disp(nomeMoeda);
+%disp(nomeMoeda);
 
 if(nomeMoeda == 'coins')
 %para imagem coins 
@@ -96,6 +96,10 @@ if(nomeMoeda == 'coins')
     valor2 = [50 70];
     valor3 = [60 90];
     valor4 = [55 70];
+    
+    [centers, radii] = imfindcircles(Imagem_normalizada,valor1,'Sensitivity',0.9);
+    %Find Coins Darker
+    [centers1, radii1] = imfindcircles(Imagem_normalizada,valor2,'ObjectPolarity','dark','Sensitivity',0.92);
     
 elseif(nomeMoeda == 'coins2')    
 %para imaggem coins2 
@@ -111,12 +115,17 @@ disp('Entrei');
      valor2 = [245 270];
      valor3 = [290 300];
      valor4 = [290 320];
+     
+     %[centers, radii] = imfindcircles(gray_image,[245 270],'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
+     %[centers1, radii1] = imfindcircles(gray_image,[290 320],'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.1);
+     
+    [centers, radii] = imfindcircles(gray_image,valor1,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
+    [centers1, radii1] = imfindcircles(gray_image,valor2,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.1);
 
 end
 
-[centers, radii] = imfindcircles(Imagem_normalizada,valor1,'Sensitivity',0.9);
-%Find Coins Darker
-[centers1, radii1] = imfindcircles(Imagem_normalizada,valor2,'ObjectPolarity','dark','Sensitivity',0.92);
+
+
 
 A=[centers, radii];
 B=[centers1, radii1];
