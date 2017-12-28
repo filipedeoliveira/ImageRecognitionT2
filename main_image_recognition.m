@@ -3,6 +3,8 @@ path = fullfile(mfilename('class'),'output',image);
 src_image =imread(path);
 path_output = fullfile(mfilename('class'),'output');
 image_name = image(1:end-4);
+warning('off', 'Images:initSize:adjustingMag');
+fontSize = 24;
 
 %------------------------------------FUNÇÃO 1  ruido----------------------------------------
 %Your program should ask to the user the type of noise to be added separately to the input
@@ -82,9 +84,9 @@ imwrite(Imagem_normalizada,strcat(path_output,'/',output_name1));
 %-------HOUGH TRANSFORM----------------
 %------------ Hough transform para imagem com ruido
 %%Find Coins Lighter
-[centers, radii] = imfindcircles(Imagem_normalizada,[60 90],'Sensitivity',0.9);
+[centers, radii] = imfindcircles(Imagem_normalizada,[55 90],'Sensitivity',0.9);
 %Find Coins Darker
-[centers1, radii1] = imfindcircles(Imagem_normalizada,[55 70],'ObjectPolarity','dark','Sensitivity',0.92);
+[centers1, radii1] = imfindcircles(Imagem_normalizada,[50 70],'ObjectPolarity','dark','Sensitivity',0.92);
 
 A=[centers, radii];
 B=[centers1, radii1];
@@ -111,9 +113,30 @@ title('Segmented image with noise');
 
 
 %---------------Otsu's fazer----------
+%---------------K means----------
+% codigo net 
+numberOfClasses = 3;
+indexes = kmeans(Imagem_normalizada(:), numberOfClasses);
+classImage = reshape(indexes, size(Imagem_normalizada));
+figure;
+h2 = subplot(1, 2, 1);
+imshow(classImage, []);
+title(' codigo da net', 'FontSize', fontSize);
+colormap(h2, lines(numberOfClasses));
+colorbar;
 
-
-
+%codigo da prof
+img_as_col = double(Imagem_normalizada(:));
+cluster_menbs = kmeans(img_as_col, 3,'distance', 'sqeuclidean');
+labelim = zeros(size(Imagem_normalizada));
+for i=1:3
+    inds = find(cluster_menbs==i);
+    meanval = mean(img_as_col(inds));
+    labelim(inds) = meanval;
+end
+h3 = subplot(1, 2, 2);
+imshow(labelim, []);
+title('codigo da prof');
 %------------------------------------FUNÇÃO 4 total de moedas ----------------------------------------
 %Number of Coins
 n = numel(D);

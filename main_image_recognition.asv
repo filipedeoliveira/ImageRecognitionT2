@@ -3,6 +3,8 @@ path = fullfile(mfilename('class'),'output',image);
 src_image =imread(path);
 path_output = fullfile(mfilename('class'),'output');
 image_name = image(1:end-4);
+warning('off', 'Images:initSize:adjustingMag');
+fontSize = 24;
 
 %------------------------------------FUNÇÃO 1  ruido----------------------------------------
 %Your program should ask to the user the type of noise to be added separately to the input
@@ -80,18 +82,18 @@ imwrite(Imagem_normalizada,strcat(path_output,'/',output_name1));
 %use a sequence of functions that solves the task of segmenting all of the coins in the image
 
 %-------HOUGH TRANSFORM----------------
-% Hough transform para imagem com ruido
+%------------ Hough transform para imagem com ruido
 %%Find Coins Lighter
-[centers, radii] = imfindcircles(Imagem_normalizada,[60 90],'Sensitivity',0.9);
+[centers, radii] = imfindcircles(Imagem_normalizada,[55 90],'Sensitivity',0.9);
 %Find Coins Darker
-[centers1, radii1] = imfindcircles(Imagem_normalizada,[55 70],'ObjectPolarity','dark','Sensitivity',0.92);
+[centers1, radii1] = imfindcircles(Imagem_normalizada,[50 70],'ObjectPolarity','dark','Sensitivity',0.92);
 
 A=[centers, radii];
 B=[centers1, radii1];
 C = vertcat(centers,centers1);
 D=vertcat(radii,radii1);
 
-% --------Hough transform para imagem sem ruido------------
+% --------Hough transform para imagem sem ruido
 %Find Coins Lighter
 [centersO, radiiO] = imfindcircles(src_image,[60 90],'Sensitivity',0.9);
 %Find Coins Darker
@@ -102,7 +104,7 @@ F=[centers1O, radii1O];
 G = vertcat(centersO,centers1O);
 H=vertcat(radiiO,radii1O);
 
-
+%---- Imagem segmentada com e sem ruido
 figure
 subplot(1,2,1), imshow(src_image), h = viscircles(centers,radii), h1 = viscircles(G,H);
 title('Segmented image without noise');
@@ -111,9 +113,16 @@ title('Segmented image with noise');
 
 
 %---------------Otsu's fazer----------
+%---------------K means----------
+ab = double(Imagem_normalizada(:,:,2:3));
+nrows = size(ab,1);
+ncols = size(ab,2);
+ab = reshape(ab,nrows*ncols,2);
 
-
-
+nColors = 3;
+% repeat the clustering 3 times to avoid local minima
+[cluster_idx, cluster_center] = kmeans(ab,nColors,'distance','sqEuclidean', ...
+                                      'Replicates',3);
 %------------------------------------FUNÇÃO 4 total de moedas ----------------------------------------
 %Number of Coins
 n = numel(D);
