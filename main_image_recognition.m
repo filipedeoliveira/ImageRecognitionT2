@@ -81,63 +81,62 @@ imwrite(Imagem_normalizada,strcat(path_output,'/',output_name1));
 %use a sequence of functions that solves the task of segmenting all of the coins in the image
 
 %-------HOUGH TRANSFORM----------------
-%------------ Hough transform para imagem com ruido
-%%Find Coins Lighter
-% FAZER AQUI IF PARA VER DE ACORDO COM O NOME DA IMAGEM SE È a coins ou
-% coins2 ou coins 3
 
-
-%disp(nomeMoeda);
-
-if(nomeMoeda == 'coins')
-%para imagem coins 
-
+if(strcmp(nomeMoeda,'coins'))
     valor1 = [50 90];
     valor2 = [50 70];
     valor3 = [60 90];
     valor4 = [55 70];
-    
+    %------------ Hough transform para imagem com ruido
     [centers, radii] = imfindcircles(Imagem_normalizada,valor1,'Sensitivity',0.9);
     %Find Coins Darker
     [centers1, radii1] = imfindcircles(Imagem_normalizada,valor2,'ObjectPolarity','dark','Sensitivity',0.92);
+
+    %------------ Hough transform para imagem sem ruido
+    [centersO, radiiO] = imfindcircles(src_image,valor3,'Sensitivity',0.9);
+    %Find Coins Darker
+    [centers1O, radii1O] = imfindcircles(src_image,valor4,'ObjectPolarity','dark','Sensitivity',0.92);
     
-elseif(nomeMoeda == 'coins2')    
+elseif(strcmp(nomeMoeda,'coins2'))    
 %para imaggem coins2 
 %     valor1 = [];
 %     valor2 = [];
 %     valor3 = [];
 %     valor4 = [];
 
-elseif(nomeMoeda =='coins3')    
-%para imaggem coins3 
-disp('Entrei');
-     valor1 = [245 250];
-     valor2 = [245 270];
-     valor3 = [290 300];
-     valor4 = [290 320];
-     
-     %[centers, radii] = imfindcircles(gray_image,[245 270],'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
-     %[centers1, radii1] = imfindcircles(gray_image,[290 320],'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.1);
-     
-    [centers, radii] = imfindcircles(gray_image,valor1,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
-    [centers1, radii1] = imfindcircles(gray_image,valor2,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.1);
+     %------------ Hough transform para imagem com ruido
+    [centers, radii] = imfindcircles(Imagem_normalizada,valor1,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
+      %Find Coins Darker
+    [centers1, radii1] = imfindcircles(Imagem_normalizada,valor2,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.1);
+     %------------ Hough transform para imagem sem ruido
+    [centersO, radiiO] = imfindcircles(src_image,valor3,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
+      %Find Coins Darker
+    [centers1O, radii1O] = imfindcircles(src_image,valor4,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.1);
 
+elseif(strcmp(nomeMoeda,'coins3'))  
+      valor1 = [220 275];
+      valor2 = [285 320];
+      valor3 = [244 260];
+      valor4 = [290 320];
+    %------------ Hough transform para imagem com ruido
+    [centers, radii] = imfindcircles(Imagem_normalizada,valor1,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
+      %Find Coins Darker
+    [centers1, radii1] = imfindcircles(Imagem_normalizada,valor2,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.1);
+     %------------ Hough transform para imagem sem ruido
+    [centersO, radiiO] = imfindcircles(src_image,valor3,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
+      %Find Coins Darker
+    [centers1O, radii1O] = imfindcircles(src_image,valor4,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.1);
+    
 end
 
 
-
-
+% --------imagem com ruido
 A=[centers, radii];
 B=[centers1, radii1];
 C = vertcat(centers,centers1);
 D=vertcat(radii,radii1);
 
-% --------Hough transform para imagem sem ruido
-%Find Coins Lighter
-[centersO, radiiO] = imfindcircles(src_image,valor3,'Sensitivity',0.9);
-%Find Coins Darker
-[centers1O, radii1O] = imfindcircles(src_image,valor4,'ObjectPolarity','dark','Sensitivity',0.92);
-
+% --------imagem sem ruido
 E=[centersO, radiiO];
 F=[centers1O, radii1O];
 G = vertcat(centersO,centers1O);
