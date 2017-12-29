@@ -97,12 +97,11 @@ if(strcmp(nomeMoeda,'coins'))
     %Find Coins Darker
     [centers1O, radii1O] = imfindcircles(src_image,valor4,'ObjectPolarity','dark','Sensitivity',0.92);
     
-elseif(strcmp(nomeMoeda,'coins2'))    
-%para imaggem coins2 
-%     valor1 = [];
-%     valor2 = [];
-%     valor3 = [];
-%     valor4 = [];
+elseif(strcmp(nomeMoeda,'coins2'))  
+      valor1 = [220 275];
+      valor2 = [285 350];
+      valor3 = [244 260];
+      valor4 = [290 350];
 
      %------------ Hough transform para imagem com ruido
     [centers, radii] = imfindcircles(Imagem_normalizada,valor1,'ObjectPolarity','dark','Sensitivity',0.98,'EdgeThreshold',0.09);
