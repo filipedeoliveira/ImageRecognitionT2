@@ -151,7 +151,11 @@ title('Segmented image with noise');
 
 %---------------Otsu's fazer----------
 %---------------K means----------
-% codigo net 
+% codigo net 1
+
+Otsu(Imagem_normalizada);
+
+% codigo net 2
 numberOfClasses = 3;
 indexes = kmeans(Imagem_normalizada(:), numberOfClasses);
 classImage = reshape(indexes, size(Imagem_normalizada));
