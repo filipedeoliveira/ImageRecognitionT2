@@ -141,7 +141,7 @@ H=vertcat(radiiO,radii1O);
 figure
 subplot(1,2,1), imshow(src_image), h = viscircles(centers,radii), h1 = viscircles(G,H);
 title('Segmented image without noise');
-subplot(1,2,2), imshow(Imagem_normalizada),h2 = viscircles(centersO,radiiO) , h3 = viscircles(C,D_r);
+subplot(1,2,2), imshow(Imagem_normalizada),h2 = viscircles(centersO,radiiO) , h3 = viscircles(C,D);
 title('Segmented image with noise');
 
 
@@ -174,14 +174,14 @@ imshow(labelim, []);
 title('K-means aula');
 %------------------------------------FUNÇÃO 4 total de moedas ----------------------------------------
 %Number of Coins
-n_moedas = numel(D_r);
+n_moedas = numel(D);
 fprintf('\n O número de moedas é %d \n', n_moedas);
 
 
 %------------------------------------FUNÇÃO 5 histogram  ----------------------------------------
 %Show a histogram showing the distribution of object sizes. Either area or radius could be used as a size measure.
 %area
-graindata = regionprops(D_r,'basic');
+graindata = regionprops(D,'basic');
 grain_areas = [graindata.Area];
 
 figure
@@ -190,7 +190,7 @@ histogram(grain_areas)
 title('Histogram of Coins Area');
 subplot(1,2,2);
 %aio
-histogram(D_r);
+histogram(D);
 title('Histogram of Coins By Radius');
 
 %------------------------------------FUNÇÃO 6  ----------------------------------------
